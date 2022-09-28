@@ -1,0 +1,63 @@
+<html>
+  <title>Icebreaker</title>
+  <head>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body class="loader-wrapper">
+    <h1 class="title">Icebreaker questions for Recruiters</h1>
+    <h2 class="subtitle">
+      Got an interview and don't feel creative today? </br>AI & I got you covered!
+    </h2>
+    <div class="question">
+      <textarea
+        rows="1"
+        class="input"
+        id="input_text"
+        placeholder="Where is the candidate from?"
+      ></textarea>
+      <button class="get_values" onclick="startUpdate(event)">Generate</button>
+    </div>
+    <textarea
+      rows="14"
+      class="output"
+      id="result"
+      placeholder="Wait for the result..."
+    ></textarea>
+
+    <script>
+      function startUpdate(e) {
+        updateTextArea();
+      }
+
+      function updateTextArea() {
+        let url =
+          "https://hf.space/embed/ecarbo/text-generator-demo/+/api/predict/"; // url
+
+        const text = document.getElementById("input_text").value;
+        const text2gen =
+          "The best icebreaker question for a person from " +
+          text +
+          " about their nation is: ";
+
+        console.log(text);
+        console.log(text2gen);
+
+        fetch(url, {
+          method: "POST",
+          body: JSON.stringify({ data: [text2gen, 1] }),
+          headers: { "Content-Type": "application/json" },
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            let textArea = document.getElementById("result");
+            // parsing the JSON value to string
+            //textArea.value = JSON.stringify(data);
+            resposta = JSON.stringify(data);
+            let dados = data;
+            console.log(dados.data[0]); //em objeto
+            textArea.value = dados.data[0];
+          });
+      }
+    </script>
+  </body>
+</html>
